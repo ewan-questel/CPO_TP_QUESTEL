@@ -4,6 +4,9 @@
  */
 package superpuissance4_console;
 
+import java.util.Random;
+import java.util.Scanner;
+
 /**
  *
  * @author ewque
@@ -41,10 +44,10 @@ public class fenetreDeJeu extends javax.swing.JFrame {
 
         panneau_grille = new javax.swing.JPanel();
         panneau_creation_partie = new javax.swing.JPanel();
-        nom_joueur_1 = new javax.swing.JLabel();
-        nom_joueur_2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        lbl_joueur_1 = new javax.swing.JLabel();
+        lbl_joueur_2 = new javax.swing.JLabel();
+        nom_joueur1 = new javax.swing.JTextField();
+        nom_joueur2 = new javax.swing.JTextField();
         btn_start = new javax.swing.JButton();
         panneau_info_joueurs = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -85,13 +88,13 @@ public class fenetreDeJeu extends javax.swing.JFrame {
         panneau_creation_partie.setBackground(new java.awt.Color(204, 204, 255));
         panneau_creation_partie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        nom_joueur_1.setText("Joueur 1 :");
-        panneau_creation_partie.add(nom_joueur_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        lbl_joueur_1.setText("Joueur 1 :");
+        panneau_creation_partie.add(lbl_joueur_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
 
-        nom_joueur_2.setText("Joueur 2 :");
-        panneau_creation_partie.add(nom_joueur_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
-        panneau_creation_partie.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 80, 30));
-        panneau_creation_partie.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 80, 30));
+        lbl_joueur_2.setText("Joueur 2 :");
+        panneau_creation_partie.add(lbl_joueur_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        panneau_creation_partie.add(nom_joueur1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 80, 30));
+        panneau_creation_partie.add(nom_joueur2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, 80, 30));
 
         btn_start.setText("Démarrer la partie");
         btn_start.addActionListener(new java.awt.event.ActionListener() {
@@ -260,6 +263,8 @@ public class fenetreDeJeu extends javax.swing.JFrame {
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
         panneau_info_joueurs.setVisible(true);
         panneau_info_partie.setVisible(true);
+        initialiserPartie();
+        
     }//GEN-LAST:event_btn_startActionPerformed
 
     /**
@@ -296,6 +301,83 @@ public class fenetreDeJeu extends javax.swing.JFrame {
             }
         });
     }
+    
+    void initialiserPartie() {
+        //Mise en place de la grille
+        grilleDeJeu.viderGrille();
+
+        //Création des joueurs
+        String nomJoueur1 = nom_joueur1.getText();
+        Joueur J1 = new Joueur(nomJoueur1);
+        String nomJoueur2 = nom_joueur2.getText();
+        Joueur J2 = new Joueur(nomJoueur2);
+        
+        Listejoueurs[0] = J1;
+        Listejoueurs[1] = J2;
+
+        attribuerCouleursAuxJoueurs();
+
+        System.out.println(J1.Nom + " est de couleur " + J1.Couleur);
+        System.out.println(J2.Nom + " est de couleur " + J2.Couleur);
+
+        // On donne des jetons aux joueurs
+        for (int i = 0; i < 21; i++) {
+
+            Jeton J = new Jeton(Listejoueurs[0].Couleur);
+
+            J1.ajouterJeton(J);
+
+            J2.ajouterJeton(new Jeton(J2.Couleur));
+        }
+
+        // Determine qui est le premier joueur
+        Random r = new Random();
+        boolean le_premier = r.nextBoolean();
+        if (le_premier) {
+            JoueurCourant = Listejoueurs[0];
+        } else {
+            JoueurCourant = Listejoueurs[1];
+        }
+
+        // Génération des 5 trous noirs et de 2 désintégrateurs sur les trou noirs
+        int compteur = 0;
+        for (int i = 0; i < 5; i++) {
+            int ligne_trou_noir = r.nextInt(6);
+            int colonne_trou_noir = r.nextInt(7);
+            if (compteur < 2) {
+                if (!grilleDeJeu.placerDesintegrateur(ligne_trou_noir, colonne_trou_noir)) {
+                    compteur--;
+                }
+                compteur = compteur + 1;
+            }
+            if (!grilleDeJeu.placerTrouNoir(ligne_trou_noir, colonne_trou_noir)) {
+                i--;
+            }
+        }
+
+        // On place les trois derniers désintégrateurs
+        for (int i = 0; i < 3; i++) {
+            int ligne_désin = r.nextInt(6);
+            int colonne_désin = r.nextInt(7);
+            if (!grilleDeJeu.placerDesintegrateur(ligne_désin, colonne_désin) || grilleDeJeu.Cellules[ligne_désin][colonne_désin].presenceTrouNoir()) {
+                i--;
+            }
+        }
+
+    }
+    
+    void attribuerCouleursAuxJoueurs() {
+        Random r = new Random();
+        boolean couleur;
+        couleur = r.nextBoolean();
+        if (couleur) {
+            Listejoueurs[0].Couleur = "Rouge";
+            Listejoueurs[1].Couleur = "Jaune";
+        } else {
+            Listejoueurs[0].Couleur = "Jaune";
+            Listejoueurs[1].Couleur = "Rouge";
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_col_0;
@@ -317,8 +399,6 @@ public class fenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lbl_j1_col;
     private javax.swing.JLabel lbl_j1_col2;
     private javax.swing.JLabel lbl_j1_nbdesint;
@@ -326,9 +406,11 @@ public class fenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_j1_nom;
     private javax.swing.JLabel lbl_j1_nom2;
     private javax.swing.JLabel lbl_j_courant;
+    private javax.swing.JLabel lbl_joueur_1;
+    private javax.swing.JLabel lbl_joueur_2;
     private javax.swing.JTextArea message;
-    private javax.swing.JLabel nom_joueur_1;
-    private javax.swing.JLabel nom_joueur_2;
+    private javax.swing.JTextField nom_joueur1;
+    private javax.swing.JTextField nom_joueur2;
     private javax.swing.JPanel panneau_creation_partie;
     private javax.swing.JPanel panneau_grille;
     private javax.swing.JPanel panneau_info_joueurs;
