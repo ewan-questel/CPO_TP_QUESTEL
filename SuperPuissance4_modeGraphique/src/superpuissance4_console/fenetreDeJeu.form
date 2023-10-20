@@ -284,7 +284,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_j1_nom2">
+        <Component class="javax.swing.JLabel" name="lbl_j2_nom">
           <Properties>
             <Property name="text" type="java.lang.String" value="nomJoueur2"/>
           </Properties>
@@ -294,7 +294,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_j1_col2">
+        <Component class="javax.swing.JLabel" name="lbl_j2_col">
           <Properties>
             <Property name="text" type="java.lang.String" value="couleurJoueur2"/>
           </Properties>
@@ -304,7 +304,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_j1_nbdesint2">
+        <Component class="javax.swing.JLabel" name="lbl_j2_nbdesint">
           <Properties>
             <Property name="text" type="java.lang.String" value="nbdesint2"/>
           </Properties>
