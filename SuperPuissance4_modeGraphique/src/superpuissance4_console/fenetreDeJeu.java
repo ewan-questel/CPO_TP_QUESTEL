@@ -234,32 +234,69 @@ public class fenetreDeJeu extends javax.swing.JFrame {
 
     private void btn_col_6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_6ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(6);
+        if (grilleDeJeu.colonne_remplie(6) == true) btn_col_6.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_6ActionPerformed
 
     private void btn_col_0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_0ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(0);
+        if (grilleDeJeu.colonne_remplie(0) == true) btn_col_0.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_0ActionPerformed
 
     private void btn_col_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_1ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(1);
+        if (grilleDeJeu.colonne_remplie(1) == true) btn_col_1.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_1ActionPerformed
 
     private void btn_col_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_2ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(2);
+        if (grilleDeJeu.colonne_remplie(2) == true) btn_col_2.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_2ActionPerformed
 
     private void btn_col_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_3ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(3);
+        if (grilleDeJeu.colonne_remplie(3) == true) btn_col_3.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_3ActionPerformed
 
     private void btn_col_4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_4ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(4);
+        if (grilleDeJeu.colonne_remplie(4) == true) btn_col_4.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_4ActionPerformed
 
     private void btn_col_5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_col_5ActionPerformed
         // TODO add your handling code here:
+        jouerDansColonne(5);
+        if (grilleDeJeu.colonne_remplie(5) == true) btn_col_5.setEnabled(false);
+        joueurSuivant();
     }//GEN-LAST:event_btn_col_5ActionPerformed
 
+    public boolean jouerDansColonne(int indice_colonne) {
+        
+        boolean resultatAction;
+        resultatAction = grilleDeJeu.ajouterJetonDansColonne(JoueurCourant, indice_colonne);
+        panneau_grille.repaint();
+        if (resultatAction == true)return true;
+        else return false;   
+    }
+    
+    public void joueurSuivant() {
+        if (JoueurCourant == Listejoueurs[0]) {
+            JoueurCourant = Listejoueurs[1];
+        } else JoueurCourant = Listejoueurs[0];
+        lbl_j_courant.setText(JoueurCourant.Nom);
+    }
+    
     private void btn_startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_startActionPerformed
         panneau_info_joueurs.setVisible(true);
         panneau_info_partie.setVisible(true);
